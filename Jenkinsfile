@@ -30,7 +30,7 @@ pipeline {
         stage ('creating dockerfile'){
         	steps {
         		script{
-        			withCredentials([string(credentialsId:'dockerCred',variables:'PASSWORD')]){
+        			withCredentials([string(credentialsId:'dockerCred',variable:'PASSWORD')]){
         				sh 'docker login -u s3clock -p ${PASSWORD}'
         				sh 'docker build -t s3clock/homework .'
         			}
