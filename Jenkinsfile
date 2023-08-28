@@ -15,15 +15,16 @@ pipeline {
 				sh 'mvn clean package'}
 		}
 
-		 steps {
-                script {
-                    def scannerHome = tool name: 'qube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                    def scannerCmd = "${scannerHome}/bin/sonar-scanner"
+		stage('Sonarqube Code Quality') {
+            environment { scannerHome = tool 'qube' }
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                    sh 'mvn sonar:sonar'}
 
-                    withSonarQubeEnv('SonarQubeServerName') {
-                        sh "${scannerCmd}"
-                    }
-                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true}
             }
+        }
 	}
 }
