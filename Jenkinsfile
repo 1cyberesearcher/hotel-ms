@@ -16,8 +16,10 @@ pipeline {
 		}
 
 		stage ('SonarQube Gate'){
-			withSonarQubeEnv('My SonarQube Server') {
-                sh 'mvn clean package sonar:sonar'}
+			steps {
+				withSonarQubeEnv('My SonarQube Server') {
+                	sh 'mvn clean package sonar:sonar'}
+                }
 		}
 	
 		stage("Quality Gate") {
