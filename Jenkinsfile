@@ -15,7 +15,7 @@ pipeline {
 				sh 'mvn clean package'}
 		}
 
-		stage ('Checking code quality'){
+		stage ('SonarQube Gate'){
 			withSonarQubeEnv('My SonarQube Server') {
                 sh 'mvn clean package sonar:sonar'}
 		}
